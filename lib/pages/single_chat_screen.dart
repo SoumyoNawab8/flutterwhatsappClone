@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:bubble/bubble.dart';
+import 'package:flutter_application_1/components/menu_dropdown.dart';
 import 'package:flutter_application_1/models/chat_messages.model.dart';
 
 class HexColor extends Color {
@@ -22,7 +23,7 @@ class SingleChatScreen extends StatefulWidget {
 class _SingleChatScreenState extends State<SingleChatScreen> {
   TextEditingController _textMessageController = TextEditingController();
   ScrollController _scrollController = ScrollController();
-
+  bool openDropDown = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,15 +59,30 @@ class _SingleChatScreenState extends State<SingleChatScreen> {
           ),
           automaticallyImplyLeading: false,
           actions: [
-            Icon(Icons.videocam),
+            InkWell(
+              onTap: () => {showAlertDialog(context, "Start video call?")},
+              child: new Icon(Icons.videocam),
+            ),
             SizedBox(
               width: 23,
             ),
-            Icon(Icons.call),
+            InkWell(
+              onTap: () => {showAlertDialog(context, "Start audio call?")},
+              child: new Icon(Icons.call),
+            ),
             SizedBox(
               width: 23,
             ),
-            Icon(Icons.more_vert),
+            InkWell(
+              onTap: () => {
+                setState(() {
+                  openDropDown = !openDropDown;
+                }),
+                print(openDropDown)
+              },
+              child: new Icon(Icons.more_vert),
+            ),
+            openDropDown == true ? MenuDropDown() : Text(""),
           ]),
       body: Container(
         decoration: BoxDecoration(
@@ -287,6 +303,45 @@ class _SingleChatScreenState extends State<SingleChatScreen> {
           )
         ],
       ),
+    );
+  }
+
+  showAlertDialog(BuildContext context, String message) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text(
+        "Cancel",
+        style: TextStyle(color: Theme.of(context).primaryColor),
+      ),
+      onPressed: () {},
+    );
+    Widget callButton = FlatButton(
+      child: Text(
+        "Call",
+        style: TextStyle(color: Theme.of(context).primaryColor),
+      ),
+      onPressed: () {},
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(""),
+      content: Text(message),
+      insetPadding: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
+      contentPadding: EdgeInsets.fromLTRB(28.0, 0.0, 28.0, 0.0),
+      buttonPadding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 2.0),
+      actions: [
+        cancelButton,
+        callButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }
