@@ -4,8 +4,11 @@ import 'package:flutter_application_1/pages/camera_screen.dart';
 import 'package:flutter_application_1/pages/chat_screen.dart';
 import 'package:flutter_application_1/pages/status_screen.dart';
 import 'package:badges/badges.dart';
+import 'package:camera/camera.dart';
 
 class WhatsAppHome extends StatefulWidget {
+  final List<CameraDescription> cameras;
+  WhatsAppHome({this.cameras});
   @override
   _WhatsAppHomeState createState() => _WhatsAppHomeState();
 }
@@ -14,12 +17,25 @@ class _WhatsAppHomeState extends State<WhatsAppHome>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
   var _activeTabIndex;
+  var activeCameraIndex;
 
   @override
   void initState() {
     super.initState();
     _tabController = new TabController(vsync: this, initialIndex: 1, length: 4);
     _activeTabIndex = 1;
+    activeCameraIndex = 0;
+  }
+
+  void switchCamera() {
+    print("hitting");
+    setState(() {
+      if (activeCameraIndex == 0) {
+        activeCameraIndex = 1;
+      } else {
+        activeCameraIndex = 0;
+      }
+    });
   }
 
   Widget build(BuildContext context) {
@@ -114,22 +130,26 @@ class _WhatsAppHomeState extends State<WhatsAppHome>
         body: new TabBarView(
           controller: _tabController,
           children: <Widget>[
-            new CameraScreen(),
+            new CameraScreen(widget.cameras, activeCameraIndex),
             new ChatScreen(),
             new StatusScreen(),
             new CallScreen(),
           ],
         ),
-        floatingActionButton: showFloatButton(context, _activeTabIndex));
+        floatingActionButton:
+            showFloatButton(context, _activeTabIndex, switchCamera));
   }
 
-  showFloatButton(BuildContext context, var _activeTabIndex) {
+  showFloatButton(
+      BuildContext context, var _activeTabIndex, Function switchCamera) {
     if (_activeTabIndex == null || _activeTabIndex == 1) {
       return chatScreenFloatingButton(context);
     } else if (_activeTabIndex == 2) {
       return statusScreenFloatingButton(context);
     } else if (_activeTabIndex == 3) {
       return callsScreenFloatingButton(context);
+    } else {
+      return cameraScreenFloatingButton(context, switchCamera);
     }
   }
 
@@ -141,6 +161,36 @@ class _WhatsAppHomeState extends State<WhatsAppHome>
         color: Colors.white,
       ),
       onPressed: () => {print("hello")},
+    );
+  }
+
+  cameraScreenFloatingButton(BuildContext context, Function switchCamera) {
+    return new Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        FloatingActionButton(
+          elevation: 3.7,
+          heroTag: null,
+          backgroundColor: Theme.of(context).accentColor,
+          child: new Icon(
+            Icons.camera,
+            color: Colors.white,
+          ),
+          onPressed: () => {print("hello")},
+        ),
+        Padding(
+          padding: EdgeInsets.all(8.0),
+        ),
+        FloatingActionButton(
+          heroTag: null,
+          backgroundColor: Theme.of(context).accentColor,
+          child: new Icon(
+            Icons.switch_camera,
+            color: Colors.white,
+          ),
+          onPressed: () => {switchCamera()},
+        ),
+      ],
     );
   }
 
