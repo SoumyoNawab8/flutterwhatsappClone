@@ -127,7 +127,7 @@ class _WhatsAppHomeState extends State<WhatsAppHome>
   }
 
   callsScreenFloatingButton(BuildContext context) {
-    return FloatingActionButton(
+    return new FloatingActionButton(
       backgroundColor: Theme.of(context).accentColor,
       child: new Icon(
         Icons.add_ic_call,
@@ -138,18 +138,38 @@ class _WhatsAppHomeState extends State<WhatsAppHome>
   }
 
   statusScreenFloatingButton(BuildContext context) {
-    return FloatingActionButton(
-      backgroundColor: Theme.of(context).accentColor,
-      child: new Icon(
-        Icons.photo_camera,
-        color: Colors.white,
-      ),
-      onPressed: () => {print("hello")},
+    return new Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        FloatingActionButton(
+          elevation: 3.7,
+          heroTag: null,
+          mini: true,
+          backgroundColor: Color(0xB3FFFFFF),
+          child: new Icon(
+            Icons.edit,
+            color: Theme.of(context).primaryColor,
+          ),
+          onPressed: () => {print("hello")},
+        ),
+        Padding(
+          padding: EdgeInsets.all(8.0),
+        ),
+        FloatingActionButton(
+          heroTag: null,
+          backgroundColor: Theme.of(context).accentColor,
+          child: new Icon(
+            Icons.photo_camera,
+            color: Colors.white,
+          ),
+          onPressed: () => {print("hello")},
+        ),
+      ],
     );
   }
 
   chatScreenFloatingButton(BuildContext context) {
-    return FloatingActionButton(
+    return new FloatingActionButton(
       backgroundColor: Theme.of(context).accentColor,
       child: new Icon(
         Icons.message,
