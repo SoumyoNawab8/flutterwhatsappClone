@@ -77,10 +77,17 @@ class _WhatsAppHomeState extends State<WhatsAppHome>
               Container(
                 width: yourWidth,
                 child: new Tab(
-                  child: new Text(
-                    "STATUS",
-                    style: new TextStyle(
-                      fontWeight: FontWeight.bold,
+                  child: new Badge(
+                    badgeColor: Colors.white,
+                    padding: _activeTabIndex != 2
+                        ? EdgeInsets.all(3)
+                        : EdgeInsets.all(0),
+                    position: BadgePosition(top: 6, end: -11),
+                    child: new Text(
+                      "STATUS",
+                      style: new TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
@@ -89,7 +96,7 @@ class _WhatsAppHomeState extends State<WhatsAppHome>
                 width: yourWidth,
                 child: new Tab(
                   child: new Text(
-                    "CHATS",
+                    "CALLS",
                     style: new TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
